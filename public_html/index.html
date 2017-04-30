@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--Hey. Get out of here, ya snooper.-->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Aerial Attack</title>
+		<link rel="stylesheet" type="text/css" href="aerialAttackStyle.css">
+		<link rel="icon" href="images/icon.png">
+	</head>
+	<body>
+		<center>
+			<img src="images/banner.png">
+			<br>
+			<small><em>Aerial Attack</em> created by Matt Getz</small>
+			<br>
+			<div class="tooltip">| Controls |
+				<span class="tooltiptext">WASD = move <br> Left = Shield <br> Right = Shoot <br> Space = Bomb <br> Up/Down = vol.</span>
+			</div>
+			<a href="" id='loadGame'> Start Game |</a>
+			<div class="tooltip"><a href="" onClick="history.go(0)" id='loadGame'> Reset |</a>
+				<span class="tooltiptext">To play again, click Reset and then Start Game</span>
+		</center>
+		<br>
+		<script type="text/javascript">
+			var loadGame = document.getElementById('loadGame');
+			loadGame.onclick = function aerialAttack() {
+				this.style.display="none";
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				script.src = "aerialAttack.js"; 
+				document.getElementsByTagName("head")[0].appendChild(script);
+				return false;		
+			}; 
+		</script>
+	</body>
+</html>
