@@ -18,11 +18,11 @@
 			<hr width="35%">
 			<br>
 			<?php
-				// connect to the database
+				//Connect to the database
 				$db = new PDO('mysql:host=localhost;dbname=getzmc26;charset=utf8', 'getzmc26', 'getzmc26');
-				// here is our SQL query statement
+				//Query
 				$q = "select name, score from highscores order by score DESC LIMIT 10";	
-				// execute query and display the results
+				//Output
 				$scoreNum = 1;
 				$period = ". ";
 				foreach ($db->query($q) as $row) {
@@ -37,7 +37,7 @@
 	<footer>
 		<center>
 		<br>
-		<p>This web site has been <a href="http://jigsaw.w3.org/css-validator/check/referer" style="text-decoration: underline;">W3C CSS Validated</a></p>
+		<p>This web site has been <a href="http://jigsaw.w3.org/css-validator/check/referer" target="_blank" style="text-decoration: underline;">W3C CSS Validated</a></p>
 		</center>
     </footer>
 </html>

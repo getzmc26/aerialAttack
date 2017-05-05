@@ -17,6 +17,13 @@ h2 {
 	letter-spacing: 3px;
 	font-size: 26px;
 }
+h3 {
+	text-align: center;
+	color: #d5d5d5;
+	font-family: "Calibri", Calibri, serif;
+	letter-spacing: 3px;
+	font-size: 20px;
+}
 p {
 	font-family: "Calibri", Calibri, serif;
 	font-weight: bold;

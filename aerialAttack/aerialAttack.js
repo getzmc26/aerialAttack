@@ -1,8 +1,10 @@
 var bulletFireReady = true;
 var shieldFireReady = true;
 var bombFireReady = true;
+var resetShieldFireReady = true;
 var isGameOver = false;
 var isBombImpactReady = true;
+var wasFormOpened = false;
 
 var enemiesKilledByBullets = 0;
 var enemiesKilledByShields = 0;
@@ -20,15 +22,19 @@ var enemy1SoundCount = 0;
 var enemy2SoundCount = 0;
 var enemy3SoundCount = 0;
 var enemy4SoundCount = 0;
+var enemy5SoundCount = 0;
 
 var playerHitByEnemy1Count = 0;
 var playerHitByEnemy2Count = 0;
 var playerHitByEnemy3Count = 0;
 var playerHitByEnemy4Count = 0;
+var playerHitByEnemy5Count = 0;
 
 var bulletAccuracy;
 var shieldAccuracy;
 var bombAccuracy;
+
+
 
 //*************************************************************
 //															   
@@ -137,6 +143,14 @@ enemy4Object.onload = function () {
 	enemy4Ready = true;
 };
 enemy4Object.src = "images/enemy.png";
+
+// Enemy5 object
+var enemy5Ready = false;
+var enemy5Object = new Image();
+enemy5Object.onload = function () {
+	enemy5Ready = true;
+};
+enemy5Object.src = "images/enemy.png";
 //*************************************************************
 
 
@@ -207,6 +221,19 @@ shieldObject.src = "images/shield.png";
 
 
 //*************************************************************
+// Player Reset Shield Object:
+//*************************************************************
+var resetShieldReady = false;
+var resetShieldObject = new Image();
+resetShieldObject.onload = function () {
+	resetShieldReady = true;
+};
+resetShieldObject.src = "images/resetShield.png";
+//*************************************************************
+
+
+
+//*************************************************************
 // Bomb Object:
 //*************************************************************
 var bombReady = false;
@@ -247,6 +274,10 @@ var enemy3 = {
 };
 
 var enemy4 = {
+	speed: 0
+};
+
+var enemy5 = {
 	speed: 0
 };
 
@@ -312,31 +343,43 @@ addEventListener("keyup", function (e) {
 			if (scrollingBackground.x <= -11551) {
 				scrollingBackground.x = 0;
 			}
-			scrollingBackground.x = scrollingBackground.x - 3;
+			scrollingBackground.x = scrollingBackground.x - 2.5;
 		}
 		if (scoreCounter >= 2000 && scoreCounter < 4000) {
 			if (scrollingBackground.x <= -11551) {
 				scrollingBackground.x = 0;
 			}
-			scrollingBackground.x = scrollingBackground.x - 4;
+			scrollingBackground.x = scrollingBackground.x - 3;
 		}
 		if (scoreCounter >= 4000 && scoreCounter < 6000) {
 			if (scrollingBackground.x <= -11551) {
 				scrollingBackground.x = 0;
 			}
-			scrollingBackground.x = scrollingBackground.x - 5;
+			scrollingBackground.x = scrollingBackground.x - 3.5;
 		}
 		if (scoreCounter >= 6000 && scoreCounter < 8000) {
 			if (scrollingBackground.x <= -11551) {
 				scrollingBackground.x = 0;
 			}
-			scrollingBackground.x = scrollingBackground.x - 6;
+			scrollingBackground.x = scrollingBackground.x - 4;
 		}
-		if (scoreCounter >= 8000) {
+		if (scoreCounter >= 8000 && scoreCounter < 10000) {
 			if (scrollingBackground.x <= -11551) {
 				scrollingBackground.x = 0;
 			}
-			scrollingBackground.x = scrollingBackground.x - 7;
+			scrollingBackground.x = scrollingBackground.x - 4.5;
+		}
+		if (scoreCounter >= 10000 && scoreCounter < 12000) {
+			if (scrollingBackground.x <= -11551) {
+				scrollingBackground.x = 0;
+			}
+			scrollingBackground.x = scrollingBackground.x - 5;
+		}
+		if (scoreCounter >= 12000) {
+			if (scrollingBackground.x <= -11551) {
+				scrollingBackground.x = 0;
+			}
+			scrollingBackground.x = scrollingBackground.x - 5.5;
 		}
 	}
 	
@@ -359,7 +402,7 @@ addEventListener("keyup", function (e) {
 			enemyNoiseCount++;
 			}
 			enemyDifficulty = "1";
-			enemy1.x = enemy1.x - 2;
+			enemy1.x = enemy1.x - 2.5;
 		}
 		if (scoreCounter >= 1000 && scoreCounter < 2000) {
 			if (enemyNoiseCount == 1) {
@@ -375,7 +418,7 @@ addEventListener("keyup", function (e) {
 			enemyNoiseCount++;
 			}
 			enemyDifficulty = "3";
-			enemy1.x = enemy1.x - 4;
+			enemy1.x = enemy1.x - 3.5;
 		}
 		if (scoreCounter >= 4000 && scoreCounter < 6000) {
 			if (enemyNoiseCount == 3) {
@@ -383,7 +426,7 @@ addEventListener("keyup", function (e) {
 			enemyNoiseCount++;
 			}
 			enemyDifficulty = "4";
-			enemy1.x = enemy1.x - 5;
+			enemy1.x = enemy1.x - 4;
 		}
 		if (scoreCounter >= 6000 && scoreCounter < 8000) {
 			if (enemyNoiseCount == 4) {
@@ -391,7 +434,10 @@ addEventListener("keyup", function (e) {
 			enemyNoiseCount++;
 			}
 			enemyDifficulty = "5";
-			enemy1.x = enemy1.x - 6;
+			enemy1.x = enemy1.x - 4.5;
+			if (enemy1.y > 20) {
+				enemy1.y = enemy1.y - .2;
+			}	
 		}
 		if (scoreCounter >= 8000 && scoreCounter < 10000) {
 			if (enemyNoiseCount == 5) {
@@ -399,7 +445,10 @@ addEventListener("keyup", function (e) {
 			enemyNoiseCount++;
 			}
 			enemyDifficulty = "6";
-			enemy1.x = enemy1.x - 7;
+			enemy1.x = enemy1.x - 5;
+			if (enemy1.y < 400) {
+				enemy1.y = enemy1.y + .2;
+			}			
 		}
 		if (scoreCounter >= 10000 && scoreCounter < 12000) {
 			if (enemyNoiseCount == 6) {
@@ -407,7 +456,10 @@ addEventListener("keyup", function (e) {
 			enemyNoiseCount++;
 			}
 			enemyDifficulty = "7";
-			enemy1.x = enemy1.x - 8;
+			enemy1.x = enemy1.x - 5.5;
+			if (enemy1.y > 20) {
+				enemy1.y = enemy1.y - .2;
+			}				
 		}
 		if (scoreCounter >= 12000) {
 			if (enemyNoiseCount == 7) {
@@ -415,7 +467,10 @@ addEventListener("keyup", function (e) {
 			enemyNoiseCount++;
 			}
 			enemyDifficulty = "8";
-			enemy1.x = enemy1.x - 9;
+			enemy1.x = enemy1.x - 6;
+			if (enemy1.y < 400) {
+				enemy1.y = enemy1.y + .2;
+			}				
 		}
 	}
 	
@@ -426,28 +481,37 @@ addEventListener("keyup", function (e) {
 	//Move enemy2 
 	function redrawEnemy2() {
 		if (scoreCounter < 1000) {
-			enemy2.x = enemy2.x - 2.5;
+			enemy2.x = enemy2.x - 1;
 		}
 		if (scoreCounter >= 1000 && scoreCounter < 2000) {
-			enemy2.x = enemy2.x - 3.5;
+			enemy2.x = enemy2.x - 1.25;
 		}
 		if (scoreCounter >= 2000 && scoreCounter < 4000) {
-			enemy2.x = enemy2.x - 4.5;
+			enemy2.x = enemy2.x - 1.5;
 		}
 		if (scoreCounter >= 4000 && scoreCounter < 6000) {
-			enemy2.x = enemy2.x - 5.5;
+			enemy2.x = enemy2.x - 2;
 		}
 		if (scoreCounter >= 6000 && scoreCounter < 8000) {
-			enemy2.x = enemy2.x - 6.5;
+			enemy2.x = enemy2.x - 2.5;			
 		}
 		if (scoreCounter >= 8000 && scoreCounter < 10000) {
-			enemy2.x = enemy2.x - 7.5;
+			enemy2.x = enemy2.x - 3;
+			if (enemy2.y > 20) {
+				enemy2.y = enemy2.y - .2;
+			}				
 		}
 		if (scoreCounter >= 10000 && scoreCounter < 12000) {
-			enemy2.x = enemy2.x - 8.5;
+			enemy2.x = enemy2.x - 3.5;
+			if (enemy2.y > 20) {
+				enemy2.y = enemy2.y - .2;
+			}				
 		}
 		if (scoreCounter >= 12000) {
-			enemy2.x = enemy2.x - 9.5;
+			enemy2.x = enemy2.x - 4;
+			if (enemy2.y > 20) {
+				enemy2.y = enemy2.y - .2;
+			}			
 		}		
 	}
 	
@@ -458,28 +522,34 @@ addEventListener("keyup", function (e) {
 	//Move enemy3	
 	function redrawEnemy3() {
 		if (scoreCounter < 1000) {
-			enemy3.x = enemy3.x - 1;
+			enemy3.x = enemy3.x - 1.25;
 		}
 		if (scoreCounter >= 1000 && scoreCounter < 2000) {
-			enemy3.x = enemy3.x - 2;
+			enemy3.x = enemy3.x - 1.5;
 		}
 		if (scoreCounter >= 2000 && scoreCounter < 4000) {
-			enemy3.x = enemy3.x - 3;
+			enemy3.x = enemy3.x - 2;
 		}
 		if (scoreCounter >= 4000 && scoreCounter < 6000) {
-			enemy3.x = enemy3.x - 4;
+			enemy3.x = enemy3.x - 2.5;
 		}
 		if (scoreCounter >= 6000 && scoreCounter < 8000) {
-			enemy3.x = enemy3.x - 5;
+			enemy3.x = enemy3.x - 3;		
 		}
 		if (scoreCounter >= 8000 && scoreCounter < 10000) {
-			enemy3.x = enemy3.x - 6;
+			enemy3.x = enemy3.x - 3.5;			
 		}
 		if (scoreCounter >= 10000 && scoreCounter < 12000) {
-			enemy3.x = enemy3.x - 7;
+			enemy3.x = enemy3.x - 4;
+			if (enemy3.y > 20) {
+				enemy3.y = enemy3.y - .2;
+			}			
 		}
 		if (scoreCounter >= 12000) {
-			enemy3.x = enemy3.x - 8;
+			enemy3.x = enemy3.x - 4.5;
+			if (enemy3.y > 20) {
+				enemy3.y = enemy3.y - .2;
+			}			
 		}		
 	}
 	
@@ -493,30 +563,83 @@ addEventListener("keyup", function (e) {
 			enemy4.x = enemy4.x - 1.5;
 		}
 		if (scoreCounter >= 1000 && scoreCounter < 2000) {
-			enemy4.x = enemy4.x - 2.5;
+			enemy4.x = enemy4.x - 2;
 		}
 		if (scoreCounter >= 2000 && scoreCounter < 4000) {
-			enemy4.x = enemy4.x - 3.5;
+			enemy4.x = enemy4.x - 2.5;
 		}
 		if (scoreCounter >= 4000 && scoreCounter < 6000) {
-			enemy4.x = enemy4.x - 4.5;
+			enemy4.x = enemy4.x - 3;
 		}
 		if (scoreCounter >= 6000 && scoreCounter < 8000) {
-			enemy4.x = enemy4.x - 5.5;
+			enemy4.x = enemy4.x - 3.5;
+			if (enemy4.y < 400) {
+				enemy4.y = enemy4.y + .2;
+			}			
 		}
 		if (scoreCounter >= 8000 && scoreCounter < 10000) {
-			enemy4.x = enemy4.x - 6.5;
+			enemy4.x = enemy4.x - 4;
+			if (enemy4.y < 400) {
+				enemy4.y = enemy4.y + .2;
+			}			
 		}
 		if (scoreCounter >= 10000 && scoreCounter < 12000) {
-			enemy4.x = enemy4.x - 7.5;
+			enemy4.x = enemy4.x - 4.5;
+			if (enemy4.y < 400) {
+				enemy4.y = enemy4.y + .2;
+			}			
 		}
 		if (scoreCounter >= 12000) {
-			enemy4.x = enemy4.x - 8.5;
+			enemy4.x = enemy4.x - 5;
+			if (enemy4.y < 400) {
+				enemy4.y = enemy4.y + .2;
+			}			
 		}		
 	}
 	
 	function moveEnemy4() {
 		setInterval(redrawEnemy4, 5);
+	}
+	
+		//Move enemy5 	
+	function redrawEnemy5() {
+		if (scoreCounter < 1000) {
+			enemy5.x = enemy5.x - 0;
+		}
+		if (scoreCounter >= 1000 && scoreCounter < 2000) {
+			enemy5.x = enemy5.x - 0;
+		}
+		if (scoreCounter >= 2000 && scoreCounter < 4000) {
+			enemy5.x = enemy5.x - 0;
+		}
+		if (scoreCounter >= 4000 && scoreCounter < 6000) {
+			enemy5.x = enemy5.x - 4.5;
+		}
+		if (scoreCounter >= 6000 && scoreCounter < 8000) {
+			enemy5.x = enemy5.x - 5.5;
+			if (enemy5.y < 400) {
+				enemy5.y = enemy5.y - .2;
+			}			
+		}
+		if (scoreCounter >= 8000 && scoreCounter < 10000) {
+			enemy5.x = enemy5.x - 6;		
+		}
+		if (scoreCounter >= 10000 && scoreCounter < 12000) {
+			enemy5.x = enemy5.x - 6.5;
+			if (enemy5.y < 400) {
+				enemy5.y = enemy5.y + .2;
+			}				
+		}
+		if (scoreCounter >= 12000) {
+			enemy5.x = enemy5.x - 7;
+			if (enemy5.y < 400) {
+				enemy5.y = enemy5.y - .2;
+			}				
+		}		
+	}
+	
+	function moveEnemy5() {
+		setInterval(redrawEnemy5, 5);
 	}
 //*************************************************************
 
@@ -530,19 +653,25 @@ addEventListener("keyup", function (e) {
 			groundEnemy.x = groundEnemy.x - 2;
 		}
 		if (scoreCounter >= 1000 && scoreCounter < 2000) {
-			groundEnemy.x = groundEnemy.x - 3;
+			groundEnemy.x = groundEnemy.x - 2;
 		}
 		if (scoreCounter >= 2000 && scoreCounter < 4000) {
-			groundEnemy.x = groundEnemy.x - 4;
+			groundEnemy.x = groundEnemy.x - 2;
 		}
 		if (scoreCounter >= 4000 && scoreCounter < 6000) {
-			groundEnemy.x = groundEnemy.x - 5;
+			groundEnemy.x = groundEnemy.x - 3;
 		}
 		if (scoreCounter >= 6000 && scoreCounter < 8000) {
-			groundEnemy.x = groundEnemy.x - 6;
+			groundEnemy.x = groundEnemy.x - 3;
 		}
-		if (scoreCounter >= 8000) {
-			groundEnemy.x = groundEnemy.x - 7;
+		if (scoreCounter >= 8000 && scoreCounter < 10000) {
+			groundEnemy.x = groundEnemy.x - 3;
+		}
+		if (scoreCounter >= 10000 && scoreCounter < 12000) {
+			groundEnemy.x = groundEnemy.x - 4;
+		}
+		if (scoreCounter >= 12000) {
+			groundEnemy.x = groundEnemy.x - 4;
 		}
 	}
 	
@@ -558,7 +687,7 @@ addEventListener("keyup", function (e) {
 //*************************************************************
 	function redrawEnemyBullet() {
 		if (groundEnemy.x <= 1150 && groundEnemy.x >= -3000) {
-		enemyBullet.y = enemyBullet.y - 3;
+		enemyBullet.y = enemyBullet.y - 5;
 		}
 	}
 	
@@ -580,17 +709,23 @@ addEventListener("keyup", function (e) {
 			heart.x = heart.x - 0;
 		}
 		if (scoreCounter >= 2000 && scoreCounter < 4000) {
-			heart.x = heart.x - 4;
+			heart.x = heart.x - 2.5;
 		}
 		if (scoreCounter >= 4000 && scoreCounter < 6000) {
-			heart.x = heart.x - 5;
+			heart.x = heart.x - 3;
 		}
 		if (scoreCounter >= 6000 && scoreCounter < 8000) {
-			heart.x = heart.x - 6;
+			heart.x = heart.x - 3.5;
 		}
-		if (scoreCounter >= 8000) {
-			heart.x = heart.x - 7;
+		if (scoreCounter >= 8000 && scoreCounter < 10000) {
+			heart.x = heart.x - 4;
 		}
+		if (scoreCounter >= 10000 && scoreCounter < 12000) {
+			heart.x = heart.x - 4.5;
+		}
+		if (scoreCounter >= 12000) {
+			heart.x = heart.x - 5;
+		}		
 	}
 	
 	function moveHeart() {
@@ -623,6 +758,9 @@ var initialObjectSpawn = function() {
 	enemy4.x = 1200;
 	enemy4.y = 15 + (Math.random() * (580 - 180));
 	
+	enemy5.x = 1200;
+	enemy5.y = 15 + (Math.random() * (580 - 180));
+	
 	//Spawn Ground Enemy
 	groundEnemy.x = 8000;
 	groundEnemy.y = 540;
@@ -639,6 +777,10 @@ var initialObjectSpawn = function() {
 	shield.x = 12000;
 	shield.y = 580;
 	
+	//Spawn Reset Shield
+	resetShield.x = 12000;
+	resetShield.y = 580;
+	
 	//Spawn Enemy Bullet
 	enemyBullet.x = 5000;
 	enemyBullet.y = 600;
@@ -650,6 +792,7 @@ var initialObjectSpawn = function() {
 	moveEnemy2();
 	moveEnemy3();
 	moveEnemy4();
+	moveEnemy5();
 	moveHeart();
 };
 //*************************************************************
@@ -682,6 +825,12 @@ var reset4 = function() {
 	enemy4.x = 1200;
 	enemy4.y = 15 + (Math.random() * (580 - 180));
 };
+
+// Reset on enemy 5 hit:
+var reset5 = function() {	
+	enemy5.x = 1200;
+	enemy5.y = 15 + (Math.random() * (580 - 180));
+};
 //*************************************************************
 
 
@@ -690,7 +839,7 @@ var reset4 = function() {
 //Ground Enemy reset:
 //*************************************************************
 var resetGroundEnemy = function() {	
-	groundEnemy.x = 8000;
+	groundEnemy.x = 2500 + (Math.random() * (6000 - 1500));
 	groundEnemy.y = 540;
 };
 //*************************************************************
@@ -712,7 +861,7 @@ var resetEnemyBullet = function() {
 //Heart reset:
 //*************************************************************
 var resetHeart = function() {	
-	heart.x = 12000;
+	heart.x = 2500 + (Math.random() * (9500 - 1500));
 	heart.y = 15 + (Math.random() * (580 - 180));
 };
 //*************************************************************
@@ -737,6 +886,39 @@ var resetShield = function() {
 	shield.x = 12000;
 	shield.y = 570;
 };
+//*************************************************************
+
+
+
+//*************************************************************
+//Reset Shield reset:
+//*************************************************************
+var resetResetShield = function() {	
+	resetShield.x = 12000;
+	resetShield.y = 570;
+};
+
+if (resetShieldFireReady == true) {
+	resetShield.x = player.x + 155;
+	resetShield.y = player.y - 25;
+	var resetShieldSpeed;
+	function redrawResetShield() {
+		resetShield.x = resetShield.x + 3;
+		if (resetShield.x > 1250) {
+		}
+		if (resetShield.x > 7000) {
+			clearInterval(resetShieldSpeed);
+			resetResetShield();
+			resetShieldFireReady = true;
+		}
+	}
+	function moveResetShield() {
+		resetShieldSound.currentTime = 0;
+		resetShieldSound.play();
+		resetShieldFireReady = false;
+		resetShieldSpeed = setInterval(redrawResetShield, 5)
+	}
+}
 //*************************************************************
 
 
@@ -937,7 +1119,11 @@ var update = function (modifier) {
 		}	
 		playerLives -= 1;
 		player.x = 10;
-		player.y = 20;
+		player.y = 20;	
+		resetShield.x = player.x + 155;
+		resetShield.y = player.y - 25;		
+		clearInterval(resetShieldSpeed);
+		moveResetShield();			
 		reset1();
 	}
 	
@@ -967,6 +1153,10 @@ var update = function (modifier) {
 		playerLives -= 1;
 		player.x = 10;
 		player.y = 20;
+		resetShield.x = player.x + 155;
+		resetShield.y = player.y - 25;			
+		clearInterval(resetShieldSpeed);
+		moveResetShield();			
 		reset2();
 	}
 	
@@ -996,6 +1186,10 @@ var update = function (modifier) {
 		playerLives -= 1;
 		player.x = 10;
 		player.y = 20;
+		resetShield.x = player.x + 155;
+		resetShield.y = player.y - 25;			
+		clearInterval(resetShieldSpeed);
+		moveResetShield();			
 		reset3();
 	}
 	
@@ -1025,8 +1219,45 @@ var update = function (modifier) {
 		playerLives -= 1;
 		player.x = 10;
 		player.y = 20;
+		resetShield.x = player.x + 155;
+		resetShield.y = player.y - 25;			
+		clearInterval(resetShieldSpeed);
+		moveResetShield();			
 		reset4();
 	}
+	
+	// Enemy5 on Player -- Hit Detection
+	if (
+		//back
+		player.x + 10 <= (enemy5.x + 140)
+		//front
+		&& enemy5.x <= (player.x + 145)
+		//top
+		&& player.y + 5 <= (enemy5.y + 32)
+		//bottom
+		&& enemy5.y <= (player.y + 25)
+	) {
+		if (playerHitByEnemy5Count == 0) {
+			playerHitBy51.play();
+			playerHitByEnemy5Count = 1;
+		}
+		else if (playerHitByEnemy5Count == 1){
+			playerHitBy52.play();
+			playerHitByEnemy5Count = 2;			
+		}
+		else {
+			playerHitBy53.play();
+			playerHitByEnemy5Count = 0;				
+		}
+		playerLives -= 1;
+		player.x = 10;
+		player.y = 20;
+		resetShield.x = player.x + 155;
+		resetShield.y = player.y - 25;			
+		clearInterval(resetShieldSpeed);
+		moveResetShield();			
+		reset5();
+	}	
 	
 	// Player on Heart -- Hit Detection
 	if (
@@ -1165,6 +1396,36 @@ var update = function (modifier) {
 		flyingEnemiesKilled += 1;
 		enemiesKilledByBullets += 1;	
 	}
+
+	// Bullet on Enemy5 -- Hit Detection	
+	if (
+		//back
+		bullet.x + 10 <= (enemy5.x + 200)
+		//front
+		&& enemy5.x <= (bullet.x + 10)
+		//top
+		&& bullet.y - 20 <= (enemy5.y + 20)
+		//bottom
+		&& enemy5.y <= (bullet.y + 10)
+	) {
+		if (enemy5SoundCount == 0) {
+			enemy5Hit1.play();
+			enemy5SoundCount = 1;
+		}
+		else if (enemy5SoundCount == 1){
+			enemy5Hit2.play();
+			enemy5SoundCount = 2;			
+		}
+		else {
+			enemy5Hit3.play();
+			enemy5SoundCount = 0;				
+		}
+		reset5();
+		resetBullet();
+		scoreCounter += 20;
+		flyingEnemiesKilled += 1;
+		enemiesKilledByBullets += 1;	
+	}	
 	
 	// Shield on Enemy1 -- Hit Detection	
 	if (
@@ -1282,6 +1543,180 @@ var update = function (modifier) {
 		enemiesKilledByShields += 1;
 	}
 	
+	// Shield on Enemy5 -- Hit Detection
+	if (
+		//back
+		shield.x + 10 <= (enemy5.x + 200)
+		//front
+		&& enemy5.x <= (shield.x + 10)
+		//top
+		&& shield.y - 20 <= (enemy5.y + 20)
+		//bottom
+		&& enemy5.y <= (shield.y + 100)
+	) {
+		if (enemy5SoundCount == 0) {
+			enemy5Hit1.play();
+			enemy5SoundCount = 1;
+		}
+		else if (enemy4SoundCount == 1){
+			enemy5Hit2.play();
+			enemy5SoundCount = 2;			
+		}
+		else {
+			enemy5Hit3.play();
+			enemy5SoundCount = 0;				
+		}
+		reset5();
+		scoreCounter += 20;
+		flyingEnemiesKilled += 1;
+		enemiesKilledByShields += 1;
+	}	
+	
+	// Reset Shield on Enemy1 -- Hit Detection	
+	if (
+		//back
+		resetShield.x + 10 <= (enemy1.x + 200)
+		//front
+		&& enemy1.x <= (resetShield.x + 10)
+		//top
+		&& resetShield.y - 20 <= (enemy1.y + 20)
+		//bottom
+		&& enemy1.y <= (resetShield.y + 100)
+	) {
+		if (enemy1SoundCount == 0) {
+			enemy3Hit1.play();
+			enemy1SoundCount = 1;
+		}
+		else if (enemy1SoundCount == 1){
+			enemy3Hit2.play();
+			enemy1SoundCount = 2;			
+		}
+		else {
+			enemy3Hit3.play();
+			enemy1SoundCount = 0;				
+		}
+		reset1();
+		scoreCounter += 20;
+		flyingEnemiesKilled += 1;
+		enemiesKilledByShields += 1;
+	}		
+	
+	// Reset Shield on Enemy2 -- Hit Detection	
+	if (
+		//back
+		resetShield.x + 10 <= (enemy2.x + 200)
+		//front
+		&& enemy2.x <= (resetShield.x + 10)
+		//top
+		&& resetShield.y - 20 <= (enemy2.y + 20)
+		//bottom
+		&& enemy2.y <= (resetShield.y + 100)
+	) {
+		if (enemy2SoundCount == 0) {
+			enemy2Hit1.play();
+			enemy2SoundCount = 1;
+		}
+		else if (enemy2SoundCount == 1){
+			enemy2Hit2.play();
+			enemy2SoundCount = 2;			
+		}
+		else {
+			enemy2Hit3.play();
+			enemy2SoundCount = 0;				
+		}
+		reset2();
+		scoreCounter += 20;
+		flyingEnemiesKilled += 1;
+		enemiesKilledByShields += 1;
+	}	
+	
+	// Reset Shield on Enemy3 -- Hit Detection	
+	if (
+		//back
+		resetShield.x + 10 <= (enemy3.x + 200)
+		//front
+		&& enemy3.x <= (resetShield.x + 10)
+		//top
+		&& resetShield.y - 20 <= (enemy3.y + 20)
+		//bottom
+		&& enemy3.y <= (resetShield.y + 100)
+	) {
+		if (enemy3SoundCount == 0) {
+			enemy3Hit1.play();
+			enemy3SoundCount = 1;
+		}
+		else if (enemy3SoundCount == 1){
+			enemy3Hit2.play();
+			enemy3SoundCount = 2;			
+		}
+		else {
+			enemy3Hit3.play();
+			enemy3SoundCount = 0;				
+		}
+		reset3();
+		scoreCounter += 20;
+		flyingEnemiesKilled += 1;
+		enemiesKilledByShields += 1;
+	}
+	
+	// Reset Shield on Enemy4 -- Hit Detection
+	if (
+		//back
+		resetShield.x + 10 <= (enemy4.x + 200)
+		//front
+		&& enemy4.x <= (resetShield.x + 10)
+		//top
+		&& resetShield.y - 20 <= (enemy4.y + 20)
+		//bottom
+		&& enemy4.y <= (resetShield.y + 100)
+	) {
+		if (enemy4SoundCount == 0) {
+			enemy4Hit1.play();
+			enemy4SoundCount = 1;
+		}
+		else if (enemy4SoundCount == 1){
+			enemy4Hit2.play();
+			enemy4SoundCount = 2;			
+		}
+		else {
+			enemy4Hit3.play();
+			enemy4SoundCount = 0;				
+		}
+		reset4();
+		scoreCounter += 20;
+		flyingEnemiesKilled += 1;
+		enemiesKilledByShields += 1;
+	}
+	
+	// Reset Shield on Enemy5 -- Hit Detection
+	if (
+		//back
+		resetShield.x + 10 <= (enemy5.x + 200)
+		//front
+		&& enemy5.x <= (resetShield.x + 10)
+		//top
+		&& resetShield.y - 20 <= (enemy5.y + 20)
+		//bottom
+		&& enemy5.y <= (resetShield.y + 100)
+	) {
+		if (enemy5SoundCount == 0) {
+			enemy5Hit1.play();
+			enemy5SoundCount = 1;
+		}
+		else if (enemy4SoundCount == 1){
+			enemy5Hit2.play();
+			enemy5SoundCount = 2;			
+		}
+		else {
+			enemy5Hit3.play();
+			enemy5SoundCount = 0;				
+		}
+		reset5();
+		scoreCounter += 20;
+		flyingEnemiesKilled += 1;
+		enemiesKilledByShields += 1;
+	}		
+	
 	// Bomb on Enemy1 -- Hit Detection	
 	if (
 		//back
@@ -1397,6 +1832,35 @@ var update = function (modifier) {
 		flyingEnemiesKilled += 1;
 		enemiesKilledByBombs += 1;		
 	}
+	
+	// Bomb on Enemy5 -- Hit Detection	
+	if (
+		//back
+		bomb.x + 10 <= (enemy5.x + 200)
+		//front
+		&& enemy5.x <= (bomb.x + 10)
+		//top
+		&& bomb.y - 20 <= (enemy5.y + 20)
+		//bottom
+		&& enemy5.y <= (bomb.y + 10)
+	) {
+		if (enemy5SoundCount == 0) {
+			enemy5Hit1.play();
+			enemy5SoundCount = 1;
+		}
+		else if (enemy5SoundCount == 1){
+			enemy5Hit2.play();
+			enemy5SoundCount = 2;			
+		}
+		else {
+			enemy5Hit3.play();
+			enemy5SoundCount = 0;				
+		}
+		reset5();
+		scoreCounter += 20;
+		flyingEnemiesKilled += 1;
+		enemiesKilledByBombs += 1;		
+	}	
 
 	// Bomb on Ground Enemy -- Hit Detection	
 	if (
@@ -1432,6 +1896,10 @@ var update = function (modifier) {
 		playerLives -= 1;
 		player.x = 10;
 		player.y = 20;
+		resetShield.x = player.x + 155;
+		resetShield.y = player.y - 25;			
+		clearInterval(resetShieldSpeed);
+		moveResetShield();			
 		resetEnemyBullet();
 	}	
 	
@@ -1451,6 +1919,10 @@ var update = function (modifier) {
 	if (enemy4.x < -140) {
 		scoreCounter += 15;
 		reset4();
+	}
+	if (enemy5.x < -140) {
+		scoreCounter += 15;
+		reset5();
 	}
 	if (heart.x < -1000) {
 		resetHeart();
@@ -1518,6 +1990,10 @@ var render = function() {
 		ctx.drawImage(shieldObject, shield.x, shield.y);
 	}
 	
+	if (resetShieldReady) {
+		ctx.drawImage(resetShieldObject, resetShield.x, resetShield.y);
+	}
+	
 	if (bombReady) {
 		ctx.drawImage(bombObject, bomb.x, bomb.y);
 	}
@@ -1537,6 +2013,10 @@ var render = function() {
 	if (enemy4Ready) {
 		ctx.drawImage(enemy4Object, enemy4.x, enemy4.y);
 	}
+	
+	if (enemy5Ready) {
+		ctx.drawImage(enemy5Object, enemy5.x, enemy5.y);
+	}	
 	
 	if (groundEnemyReady) {
 		ctx.drawImage(groundEnemyObject, groundEnemy.x, groundEnemy.y);
@@ -1615,22 +2095,29 @@ var playerHitBy41 = new Audio('sounds/playerHit.mp3');
 var playerHitBy42 = new Audio('sounds/playerHit.mp3');
 var playerHitBy43 = new Audio('sounds/playerHit.mp3');
 
+var playerHitBy51 = new Audio('sounds/playerHit.mp3');
+var playerHitBy52 = new Audio('sounds/playerHit.mp3');
+var playerHitBy53 = new Audio('sounds/playerHit.mp3');
+
 var playerHitByEnemyBulletSound = new Audio('sounds/playerHit.mp3');
 
 var enemy1Hit1 = new Audio('sounds/enemyHit.mp3');
 var enemy2Hit1 = new Audio('sounds/enemyHit.mp3');
 var enemy3Hit1 = new Audio('sounds/enemyHit.mp3');
 var enemy4Hit1 = new Audio('sounds/enemyHit.mp3');
+var enemy5Hit1 = new Audio('sounds/enemyHit.mp3');
 
 var enemy1Hit2 = new Audio('sounds/enemyHit.mp3');
 var enemy2Hit2 = new Audio('sounds/enemyHit.mp3');
 var enemy3Hit2 = new Audio('sounds/enemyHit.mp3');
 var enemy4Hit2 = new Audio('sounds/enemyHit.mp3');
+var enemy5Hit2 = new Audio('sounds/enemyHit.mp3');
 
 var enemy1Hit3 = new Audio('sounds/enemyHit.mp3');
 var enemy2Hit3 = new Audio('sounds/enemyHit.mp3');
 var enemy3Hit3 = new Audio('sounds/enemyHit.mp3');
 var enemy4Hit3 = new Audio('sounds/enemyHit.mp3');
+var enemy5Hit3 = new Audio('sounds/enemyHit.mp3');
 
 var groundEnemyHit = new Audio('sounds/enemyHit.mp3');
 var enemyBulletSound1 = new Audio('sounds/enemyBulletNoise.mp3');
@@ -1653,6 +2140,8 @@ var bulletSound8 = new Audio('sounds/bulletNoise.mp3');
 
 var shieldSound = new Audio('sounds/shieldNoise.mp3');
 var shieldRechargedSound = new Audio('sounds/shieldRecharged.mp3');
+
+var resetShieldSound = new Audio('sounds/resetShieldNoise.mp3');
 
 var bombSound = new Audio('sounds/bombNoise.mp3');
 var bombReloadedSound = new Audio('sounds/bombReloaded.mp3');
@@ -1690,21 +2179,40 @@ gameMusic.volume = 0.3;
 
 
 //*************************************************************
-//Thank You Prompt
+//High Score Prompt:
 //*************************************************************
-var thankPrompt = function() {
-	var thank = alert("Thanks for playing!\n\n- Matt Getz");
-	document.getElementById("thank").innerHTML = thank;
+var highScoreWindow = function() {
+	if (jsCheckForTen < 10) {
+		if (wasFormOpened == false) {		
+			document.cookie = 'score=' + scoreCounter;
+			window.open("http://csmupa.com/~getzmc26/pub3304/aerialAttack/form.php", "_blank");
+		}
+		wasFormOpened = true;
+	}
+	else if (scoreCounter > jsGetLastScore) {
+		if (wasFormOpened == false) {
+			document.cookie = 'score=' + scoreCounter;
+			window.open("http://csmupa.com/~getzmc26/pub3304/aerialAttack/form.php", "_blank");
+		}			
+		wasFormOpened = true;	
+	}
+	else {
+		//loser
+	}
 }
 //*************************************************************
 
+
+
 //*************************************************************
-//High Score Prompt
+//Kill game:
 //*************************************************************
-var highScoreWindow = function() {
-	window.location.href = "http://csmupa.com/~getzmc26/pub3304/aerialAttack/getScore.php?score=" + scoreCounter;
+function killGame() {
+   throw new Error('Not an error. I needed a way to kill the running JavaScript');
 }
 //*************************************************************
+
+
 
 //*************************************************************
 // Game over:
@@ -1729,6 +2237,7 @@ var highScoreWindow = function() {
 			bombAccuracy = (Math.round((enemiesKilledByBombs / bombsUsedCount) * 100));
 		}		
 		isGameOver = true;
+		resetShieldSound.pause();
 		gameOverMusic.play();
 		ctx.drawImage(staticBackgroundObject, 0, 0);
 		ctx.drawImage(gameOverBackgroundBottomObject, 0, 530);
@@ -1821,7 +2330,7 @@ var main = function() {
 		gameMusic.pause();
 		gameOver();
 		highScoreWindow();
-		thankPrompt();
+		killGame();
 	}
 	then = now;
 	requestAnimationFrame(main);
@@ -1855,7 +2364,7 @@ function gameStartUp() {
 //Welcome message then begin game:
 //*************************************************************
 var then = Date.now();
-
+//alert("Number of entries: " + jsCheckForTen + "\n\n" + "Score to beat: " + jsGetLastScore);
 introSound.play();
 ctx.fillStyle = "rgb(250, 250, 250)";
 ctx.font = "24px Calibri";
